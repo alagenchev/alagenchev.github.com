@@ -4,7 +4,7 @@
   <title><![CDATA[Ivan Alagenchev's Personal Blog]]></title>
   <link href="http://alagenchev.github.com/atom.xml" rel="self"/>
   <link href="http://alagenchev.github.com/"/>
-  <updated>2013-02-03T23:10:10-05:00</updated>
+  <updated>2013-02-03T23:29:40-05:00</updated>
   <id>http://alagenchev.github.com/</id>
   <author>
     <name><![CDATA[Ivan Alagenchev]]></name>
@@ -12,5 +12,220 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Grails Doesn't Break Out of Closures]]></title>
+    <link href="http://alagenchev.github.com/blog/2012/10/26/grails-doesnt-break-out-of-closures/"/>
+    <updated>2012-10-26T21:50:00-04:00</updated>
+    <id>http://alagenchev.github.com/blog/2012/10/26/grails-doesnt-break-out-of-closures</id>
+    <content type="html"><![CDATA[<p>http://stackoverflow.com/questions/765605/how-does-one-return-from-a-groovy-closure-and-stop-its-execution</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gnome Keyring Bug Mismanages SSH Keys]]></title>
+    <link href="http://alagenchev.github.com/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/"/>
+    <updated>2012-10-05T13:58:00-04:00</updated>
+    <id>http://alagenchev.github.com/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys</id>
+    <content type="html"><![CDATA[<p>I use several ssh keys to connect to git on the same machine. I have my personal github account, the company github account and also a separate git account for an internal company repository.
+We manage all account authentication via ssh RSA keys and naturally they all reside in my ~/.ssh folder. Today, I was trying to make a push to github from an account that I hadn&#8217;t used for a while
+and github reported a &#8220;Permission Denied&#8221; error. I noticed that git was trying to push with the wrong user account. I thought to myself &#8220;Not a biggie, I&#8217;ll just temporarily remove they keys that I don&#8217;t need. That&#8217;s usually done executing <code>ssh-add -d \path\to\key</code> to remove the key one doesn&#8217;t want to use anymore. However, I was completely caught by surprise, <code>ssh-add -l</code> would still show the same keys listed without any changes.</p>
+
+<p>After a bit of searching, I found the following <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=472477">bug reported on debian&#8217;s bug tracker</a>. Apparently this is a known, though not actively worked on, bug in gnome-keyring. To work around the issue move all your keys from <code>~\.ssh</code> to another folder and open seahorse (keyring management tool) and remove all your unneeded keys from it. Your <code>ssh-add -l</code> should report the correct keys from now on and your <code>git push</code> should succeed.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Grails Deletes plugin-classes on grails clean]]></title>
+    <link href="http://alagenchev.github.com/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/"/>
+    <updated>2012-10-05T13:03:00-04:00</updated>
+    <id>http://alagenchev.github.com/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean</id>
+    <content type="html"><![CDATA[<p>Today <a href="grails.org">Grails</a> gave me the following error:</p>
+
+<blockquote><pre><code>Description Resource    Path    Location    Type
+The container 'Grails Dependencies' references non existing library '/home/alagenchev/.grails/2.1.0/projects/com.vpundit.www/plugin-classes'
+The project cannot be built until build path errors are resolved    com.vpundit.www     Unknown Java Problem
+</code></pre></blockquote>
+
+<p>I didn&#8217;t know what was causing the problem at first, but I went to the folder in the error message and created the plugin-classes folder,
+<code>mkdir /home/alagenchev/.grails/2.1.0/projects/com.vpundit.www/plugin-classes</code>. The problem disappeared, however it was back again when I did <code>grails clean</code>.
+Obviously <code>grails clean</code> was deleting my plugin-classes folder.</p>
+
+<p>Here is how to fix the problem:</p>
+
+<p>Navigate to your <code>GRAILS_HOME</code> directory and edit the <code>GRAILS_HOME/scripts/_GrailsClean.groovy</code> script. Comment the following line:</p>
+
+<blockquote><pre><code>ant.delete(dir:pluginClassesDirPath, failonerror:false)
+</code></pre></blockquote>
+
+<p>Voila! Now you just need to recreate the plugin-classes folder again and you are set.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Use Octopress With Multiple Users or on Multiple Machines]]></title>
+    <link href="http://alagenchev.github.com/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/"/>
+    <updated>2012-09-14T17:11:00-04:00</updated>
+    <id>http://alagenchev.github.com/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines</id>
+    <content type="html"><![CDATA[<p><em>This post assumes that the correct ssh public key is deployed on Github and that you have your private ssh key properly added to your .ssh folder.
+We also assume that a <a href="https://github.com/mojombo/jekyll/wiki">Jekyll</a> blog has already been created following the steps in our <a href="http://simyin.github.com/blog/2012/09/12/setting-up-an-octopress-blog-on-github/">previous post</a></em>.</p>
+
+<p><a href="https://help.github.com/categories/56/articles">This page</a> has good information about troubleshooting and generating ssh keys.
+Test and troubleshoot, if needed your authentication following the steps <a href="https://help.github.com/articles/error-permission-denied-publickey">here</a>, before proceeding.</p>
+
+<p>First, you will have to navigate to a folder where you would like to keep your blog posts and issue the following command:</p>
+
+<p><code>git clone git@github.com:simyin/simyin.github.com.git simyin_blog</code> where you would replace <code>simyin_blog</code> with the name of your own blog and the github repository url with your own github url.</p>
+
+<p>Now, navigate to the newly created folder: <code>cd simyin_blog/</code> and switch to the source branch of the blog repo: <code>git checkout source</code>.
+We need to specify the username and email that git will be using for commits:</p>
+
+<blockquote><pre><code>~/simyin_blog$ git config user.name "Ivan Alagenchev" 
+~/simyin_blog$ git config user.email "ivan@simy.in"
+</code></pre></blockquote>
+
+<p>You can see your changes: <code>~/simyin_blog/$ vi .git/config</code></p>
+
+<p>Create the <code>_deploy folder</code> which will serve as the target folder for the generate rake task: <code>mkdir _deploy</code>.
+Your folder structure should represent something similar to:</p>
+
+<pre><code>   parent
+      |
+my_blog_name
+      |
+  _deploy
+</code></pre>
+
+<p>Navigate to <em>deploy: <code>cd _deploy</code> and initialize a new git repository in the </em>deploy folder:</p>
+
+<blockquote><pre><code>git init
+Initialized empty Git repository in /parent/simyin_blog/_deploy/.git/
+</code></pre></blockquote>
+
+<p>Now execute: <code>git remote add origin git@github.com:simyin/simyin.github.com.git</code>. This adds a new remote branch, which will be named origin for short from now on and it will be pointing to the github repository, which you provided.
+Next we&#8217;ll do <code>git pull origin master</code> to pull all contents of the remote branch named origin (the one we added in the previous step) and associate it with a local branch named master.</p>
+
+<p>We need to specify the username and email that git will be using for commits for this branch too:</p>
+
+<blockquote><pre><code>~/simyin_blog/_deploy$ git config user.name "Ivan Alagenchev" 
+~/simyin_blog/_deploy$ git config user.email "ivan@simy.in"
+</code></pre></blockquote>
+
+<p>You can see your changes: <code>~/simyin_blog/_deploy$ vi .git/config</code></p>
+
+<p>Now we can go to the parent directory <code>cd ..</code> and create posts as usual: ~/simyin_blog$ rake new_post[&#8220;post title&#8221;], which we can now edit:</p>
+
+<p><code>~/simyin_blog$ gedit source/_posts/date-title.markdown</code></p>
+
+<p>Make sure to fill in the &#8220;author:&#8221; field in the <a href="https://github.com/mojombo/jekyll/wiki/yaml-front-matter">yaml front matter</a> to associate posts with their authors.
+You can also make a draft post by specifying <code>published: false</code> in the yaml front matter and you can preview your post by running <code>rake preview</code> from the command line and navigating to <code>localhost:4000</code>.</p>
+
+<p>Rake preview has a file listener, which detects any changes that are made to files, so you don&#8217;t have to rerun the command every time you make changes to your post. Refreshing your browser window will display the new changes.</p>
+
+<p>Once you are finished with your blog post, you can generate the post using <code>rake generate</code> and deploy using <code>rake deploy</code>, or combine the steps with <code>rake gen_deploy</code>.</p>
+
+<p>Do not forget to commit your post to github after you make your changes. Rake deploy commits the blog automatically, but you also want to commit your markdown markup.</p>
+
+<p>Inside your blogs main folder, simyin_blog in our example, run the following commands:</p>
+
+<blockquote><pre><code>git add .
+git commit -m "message"
+git push origin source
+</code></pre></blockquote>
+
+<p>This will make sure that all your posts are nicely backed up - one of the biggest advantages of using Github and Jekyll.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setting Up An Octopress Blog on GitHub]]></title>
+    <link href="http://alagenchev.github.com/blog/2012/09/12/setting-up-an-octopress-blog-on-github/"/>
+    <updated>2012-09-12T00:49:00-04:00</updated>
+    <id>http://alagenchev.github.com/blog/2012/09/12/setting-up-an-octopress-blog-on-github</id>
+    <content type="html"><![CDATA[<p>We&#8217;ve decided to go with GitHub and <a href="https://github.com/mojombo/jekyll/wiki">Jekyll</a>, using <a href="http://octopress.org/">Octopress</a> for the backend of our company blog.
+Jekyll is a simple, blog aware, static site generator. Octopress is a framework for Jekyll that adds some rake scripts and themes that make getting started with Jekyll faster and easier.</p>
+
+<p>There were several factors that pushed us towards this decision as opposed to using <a href="http://wordpress.com/">wordpress</a>. I will list some of the advantages and disadvantages of each. <a href="#setup">Click Here</a>, if you want to skip this part and go straight to the setup instructions.</p>
+
+<p><strong>Wordpress</strong></p>
+
+<p><em>Advantages</em></p>
+
+<ol>
+<li><p>Easy and quick to set up</p></li>
+<li><p>Easy to find a suitable theme out of the box, or a freely available one created by a 3rd party.</p></li>
+<li><p>Lot&#8217;s of available plugins</p></li>
+</ol>
+
+
+<p><em>Disadvantages</em></p>
+
+<ol>
+<li><p>Slow (Potentially addressable with 3rd party caching plugins, but that adds additional overhead)</p></li>
+<li><p>No backups</p></li>
+<li><p>Embedding well formatted code requires 3rd party plugins</p></li>
+<li><p>Uses an online WYSIWYG editor - some people might consider this a plus, but I find it much faster to use a nice markup language like markup inside an editor locally. I don&#8217;t have to navigate to a webpage, navigate through the interface until I get to where I need to get and write inside a clunky WYSIWYG editor.</p></li>
+<li><p>I perceive Wordpress hosting as less reliable than GitHub&#8217;s</p></li>
+</ol>
+
+
+<p><strong>Jekyll/Octopress</strong></p>
+
+<p><em>Advantages</em></p>
+
+<ol>
+<li><p>Easy to set up, though less easy than wordpress</p></li>
+<li><p>If you set it up on Github, you get automatic backup of your whole blog</p></li>
+<li><p>Uses <a href="http://daringfireball.net/projects/markdown/">Markdown</a> for markup. This makes the generated HTML much better and lighter than what can be generated by WYSIWYG editors, which are notorious for generating bad markup.</p></li>
+<li><p>Much faster to post a blog post than Wordpress. All you have to do is run <code>rake new_post</code>, open the file with your editor, make changes and do <code>rake gen_deploy</code>. There is no need to navigate to a website, navigate through a web interface to open a WYSIWYG editor, wait for it to load and then post. Once you have the 3 main commands down, you are set.</p></li>
+<li><p>You are in control</p></li>
+<li><p>Jekyll generates static HTML pages - there is no need to deal with caching to make your blog fast. It already is.</p></li>
+<li><p>It&#8217;s cool.</p></li>
+<li><p>Easily customizable. Both Jekyll and Octopress are open source, you can easily customize them. I already made some changes to one of the Octopress rake files. It was pretty easy to find what I needed.</p></li>
+<li><p>From what I&#8217;ve seen so far, theming with Jekyll is very easy - certainly easier than Wordpress.</p></li>
+<li><p>Very fast local preview using <code>rake preview</code>, so that you can preview your posts before publishing.</p></li>
+</ol>
+
+
+<p><em>Disadvantages</em></p>
+
+<ol>
+<li><p>It might be challenging to set up by non-geeks. Geeks should not have any problems (see advantages )</p></li>
+<li><p>Not many plugins are available (Though there is less of a need for them)</p></li>
+<li><p>Not many themes are available out of the box (see 9 in advantages)</p></li>
+</ol>
+
+
+<p><a id="setup"></a>
+<strong>How to set up Jekyll/Octopress on Github</strong></p>
+
+<p>1) Create an account on github.</p>
+
+<p>2) There are two types of pages that you can create on github, one is User/Organization pages and the other is project pages. User pages will have a url of the form http://username.github.com while project pages have urls like: http://username.github.com/project. Of course you can also have multiple project pages, while you can have only one organization page. If you want to create an organization page, you have to create a repository named username.github.com.</p>
+
+<p>3) Next, we need to install octopress. The instructions here <a href="http://octopress.org/docs/setup/">http://octopress.org/docs/setup/</a> are pretty easy to follow.</p>
+
+<p>4) Deploy on github following the instructions here <a href="http://octopress.org/docs/deploying/github/">http://octopress.org/docs/deploying/github/</a> Github supports 3 different protocols for pushing to the git repositories. I recommend using the ssh one, which has urls of the form: git@github.com:username/username.github.com.git. This <a href="https://help.github.com/articles/which-remote-url-should-i-use">link here</a> can give you more information on the differences between the different urls that Git supports.</p>
+
+<p>If you get the following error when you deploy:</p>
+
+<blockquote><pre><code>##Pushing generated _deploy website
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+</code></pre></blockquote>
+
+<p>That means you haven&#8217;t setup your ssh correctly. More than likely, you need to add a ssh key to your .ssh folder. If you see an error message similar to access denied, then you probably haven&#8217;t added the newly generated key to ssh: <code>ssh-add path/to/key</code>
+<a href="https://help.github.com/articles/generating-ssh-keys">Here is some more information</a> on how to set up your ssh keys, so that github would allow you to commit to your repository. If you are still having trouble deploying, <a href="https://help.github.com/articles/error-permission-denied-publickey">these help pages</a> are great for troubleshooting ssh errors.</p>
+
+<p>Finally, don&#8221;t forget to setup the username and email to use for commits as described <a href="https://help.github.com/articles/set-up-git">here</a></p>
+
+<p>Once you&#8217;ve followed the steps to generate the ssh key, it&#8217;s a good idea to test if everything is working fine:
+<code>ssh -vT git@github.com</code></p>
+
+<p>After you&#8217;ve fixed your ssh troubles, <code>rake deploy</code> should work without issues and you should be able to see your page at http://username.github.com after a few minutes. Please note that it will take longer than usual for your pages to appear the first time you deploy,.</p>
+
+<p>Congratulations! Now, you are ready to start using your Jekyll blog. You can also take a look at some available Octopress themes <a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes/">here</a></p>
+]]></content>
+  </entry>
   
 </feed>

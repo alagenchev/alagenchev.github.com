@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Ivan Alagenchev's Personal Blog</title>
+  <title>Gnome Keyring Bug Mismanages SSH Keys - Ivan Alagenchev's Personal Blog</title>
   <meta name="author" content="Ivan Alagenchev">
 
   
-  <meta name="description" content="Blog Archive 2012 Grails Doesn&#8217;t Break Out of Closures
-Oct 26 2012 Gnome Keyring Bug Mismanages SSH Keys
-Oct 05 2012 posted in debian, github &hellip;">
+  <meta name="description" content="I use several ssh keys to connect to git on the same machine. I have my personal github account, the company github account and also a separate git &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ Oct 05 2012 posted in debian, github &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://alagenchev.github.com/blog/archives/">
+  <link rel="canonical" href="http://alagenchev.github.com/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -64,87 +62,90 @@ Oct 05 2012 posted in debian, github &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Gnome Keyring Bug Mismanages SSH Keys</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-05T13:58:00-04:00" pubdate data-updated="true">Oct 5<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>I use several ssh keys to connect to git on the same machine. I have my personal github account, the company github account and also a separate git account for an internal company repository.
+We manage all account authentication via ssh RSA keys and naturally they all reside in my ~/.ssh folder. Today, I was trying to make a push to github from an account that I hadn&#8217;t used for a while
+and github reported a &#8220;Permission Denied&#8221; error. I noticed that git was trying to push with the wrong user account. I thought to myself &#8220;Not a biggie, I&#8217;ll just temporarily remove they keys that I don&#8217;t need. That&#8217;s usually done executing <code>ssh-add -d \path\to\key</code> to remove the key one doesn&#8217;t want to use anymore. However, I was completely caught by surprise, <code>ssh-add -l</code> would still show the same keys listed without any changes.</p>
 
-  
-  <h2>2012</h2>
-
-<article>
-  
-<h1><a href="/blog/2012/10/26/grails-doesnt-break-out-of-closures/">Grails Doesn&#8217;t Break Out of Closures</a></h1>
-<time datetime="2012-10-26T21:50:00-04:00" pubdate><span class='month'>Oct</span> <span class='day'>26</span> <span class='year'>2012</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/">Gnome Keyring Bug Mismanages SSH Keys</a></h1>
-<time datetime="2012-10-05T13:58:00-04:00" pubdate><span class='month'>Oct</span> <span class='day'>05</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/debian/'>debian</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/gnome/'>gnome</a>, <a class='category' href='/blog/categories/seahorse/'>seahorse</a>, <a class='category' href='/blog/categories/ssh/'>ssh</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/">Grails Deletes plugin-classes on grails clean</a></h1>
-<time datetime="2012-10-05T13:03:00-04:00" pubdate><span class='month'>Oct</span> <span class='day'>05</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/errors/'>Errors</a>, <a class='category' href='/blog/categories/grails/'>Grails</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/">How to Use Octopress With Multiple Users or on Multiple Machines</a></h1>
-<time datetime="2012-09-14T17:11:00-04:00" pubdate><span class='month'>Sep</span> <span class='day'>14</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/jekyll/'>Jekyll</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/09/12/setting-up-an-octopress-blog-on-github/">Setting Up An Octopress Blog on GitHub</a></h1>
-<time datetime="2012-09-12T00:49:00-04:00" pubdate><span class='month'>Sep</span> <span class='day'>12</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/octopress/'>octopress</a></span>
-</footer>
-
-
-</article>
-
+<p>After a bit of searching, I found the following <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=472477">bug reported on debian&#8217;s bug tracker</a>. Apparently this is a known, though not actively worked on, bug in gnome-keyring. To work around the issue move all your keys from <code>~\.ssh</code> to another folder and open seahorse (keyring management tool) and remove all your unneeded keys from it. Your <code>ssh-add -l</code> should report the correct keys from now on and your <code>git push</code> should succeed.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Alagenchev</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-05T13:58:00-04:00" pubdate data-updated="true">Oct 5<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/debian/'>debian</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/gnome/'>gnome</a>, <a class='category' href='/blog/categories/seahorse/'>seahorse</a>, <a class='category' href='/blog/categories/ssh/'>ssh</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alagenchev.github.com/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/" data-via="alagenchev" data-counturl="http://alagenchev.github.com/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/" title="Previous Post: Grails Deletes plugin-classes on grails clean">&laquo; Grails Deletes plugin-classes on grails clean</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/10/26/grails-doesnt-break-out-of-closures/" title="Next Post: Grails Doesn't Break Out of Closures">Grails Doesn't Break Out of Closures &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>

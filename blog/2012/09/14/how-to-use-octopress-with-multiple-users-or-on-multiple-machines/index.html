@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How to Use Octopress With Multiple Users or on Multiple Machines - Ivan Alagenchev's Personal Blog</title>
+  <meta name="author" content="Ivan Alagenchev">
+
+  
+  <meta name="description" content="This post assumes that the correct ssh public key is deployed on Github and that you have your private ssh key properly added to your .ssh folder.
+We &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alagenchev.github.com/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Alagenchev's Personal Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:alagenchev.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            Ivan Alagenchev's Personal Blog
+        </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">How to Use Octopress With Multiple Users or on Multiple Machines</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-14T17:11:00-04:00" pubdate data-updated="true">Sep 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><em>This post assumes that the correct ssh public key is deployed on Github and that you have your private ssh key properly added to your .ssh folder.
+We also assume that a <a href="https://github.com/mojombo/jekyll/wiki">Jekyll</a> blog has already been created following the steps in our <a href="http://simyin.github.com/blog/2012/09/12/setting-up-an-octopress-blog-on-github/">previous post</a></em>.</p>
+
+<p><a href="https://help.github.com/categories/56/articles">This page</a> has good information about troubleshooting and generating ssh keys.
+Test and troubleshoot, if needed your authentication following the steps <a href="https://help.github.com/articles/error-permission-denied-publickey">here</a>, before proceeding.</p>
+
+<p>First, you will have to navigate to a folder where you would like to keep your blog posts and issue the following command:</p>
+
+<p><code>git clone git@github.com:simyin/simyin.github.com.git simyin_blog</code> where you would replace <code>simyin_blog</code> with the name of your own blog and the github repository url with your own github url.</p>
+
+<p>Now, navigate to the newly created folder: <code>cd simyin_blog/</code> and switch to the source branch of the blog repo: <code>git checkout source</code>.
+We need to specify the username and email that git will be using for commits:</p>
+
+<blockquote><pre><code>~/simyin_blog$ git config user.name "Ivan Alagenchev" 
+~/simyin_blog$ git config user.email "ivan@simy.in"
+</code></pre></blockquote>
+
+<p>You can see your changes: <code>~/simyin_blog/$ vi .git/config</code></p>
+
+<p>Create the <code>_deploy folder</code> which will serve as the target folder for the generate rake task: <code>mkdir _deploy</code>.
+Your folder structure should represent something similar to:</p>
+
+<pre><code>   parent
+      |
+my_blog_name
+      |
+  _deploy
+</code></pre>
+
+<p>Navigate to <em>deploy: <code>cd _deploy</code> and initialize a new git repository in the </em>deploy folder:</p>
+
+<blockquote><pre><code>git init
+Initialized empty Git repository in /parent/simyin_blog/_deploy/.git/
+</code></pre></blockquote>
+
+<p>Now execute: <code>git remote add origin git@github.com:simyin/simyin.github.com.git</code>. This adds a new remote branch, which will be named origin for short from now on and it will be pointing to the github repository, which you provided.
+Next we&#8217;ll do <code>git pull origin master</code> to pull all contents of the remote branch named origin (the one we added in the previous step) and associate it with a local branch named master.</p>
+
+<p>We need to specify the username and email that git will be using for commits for this branch too:</p>
+
+<blockquote><pre><code>~/simyin_blog/_deploy$ git config user.name "Ivan Alagenchev" 
+~/simyin_blog/_deploy$ git config user.email "ivan@simy.in"
+</code></pre></blockquote>
+
+<p>You can see your changes: <code>~/simyin_blog/_deploy$ vi .git/config</code></p>
+
+<p>Now we can go to the parent directory <code>cd ..</code> and create posts as usual: ~/simyin_blog$ rake new_post[&#8220;post title&#8221;], which we can now edit:</p>
+
+<p><code>~/simyin_blog$ gedit source/_posts/date-title.markdown</code></p>
+
+<p>Make sure to fill in the &#8220;author:&#8221; field in the <a href="https://github.com/mojombo/jekyll/wiki/yaml-front-matter">yaml front matter</a> to associate posts with their authors.
+You can also make a draft post by specifying <code>published: false</code> in the yaml front matter and you can preview your post by running <code>rake preview</code> from the command line and navigating to <code>localhost:4000</code>.</p>
+
+<p>Rake preview has a file listener, which detects any changes that are made to files, so you don&#8217;t have to rerun the command every time you make changes to your post. Refreshing your browser window will display the new changes.</p>
+
+<p>Once you are finished with your blog post, you can generate the post using <code>rake generate</code> and deploy using <code>rake deploy</code>, or combine the steps with <code>rake gen_deploy</code>.</p>
+
+<p>Do not forget to commit your post to github after you make your changes. Rake deploy commits the blog automatically, but you also want to commit your markdown markup.</p>
+
+<p>Inside your blogs main folder, simyin_blog in our example, run the following commands:</p>
+
+<blockquote><pre><code>git add .
+git commit -m "message"
+git push origin source
+</code></pre></blockquote>
+
+<p>This will make sure that all your posts are nicely backed up - one of the biggest advantages of using Github and Jekyll.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Alagenchev</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-14T17:11:00-04:00" pubdate data-updated="true">Sep 14<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jekyll/'>Jekyll</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alagenchev.github.com/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/" data-via="alagenchev" data-counturl="http://alagenchev.github.com/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/09/12/setting-up-an-octopress-blog-on-github/" title="Previous Post: Setting Up An Octopress Blog on GitHub">&laquo; Setting Up An Octopress Blog on GitHub</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/" title="Next Post: Grails Deletes plugin-classes on grails clean">Grails Deletes plugin-classes on grails clean &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/10/26/grails-doesnt-break-out-of-closures/">Grails Doesn't Break Out of Closures</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/">Gnome Keyring Bug Mismanages SSH Keys</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/">Grails Deletes plugin-classes on grails clean</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/">How to Use Octopress With Multiple Users or on Multiple Machines</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/12/setting-up-an-octopress-blog-on-github/">Setting Up An Octopress Blog on GitHub</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("alagenchev", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/alagenchev" class="twitter-follow-button" data-show-count="false">Follow @alagenchev</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Ivan Alagenchev -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

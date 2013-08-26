@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://alagenchev.github.com/sitemap.xml 
+Sitemap: http://alagenchev.github.io/sitemap.xml 

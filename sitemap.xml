@@ -1,43 +1,49 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://alagenchev.com/blog/2012/09/12/setting-up-an-octopress-blog-on-github/</loc>
-        <lastmod>2013-02-03T23:29:20-05:00</lastmod>
-    </url>
-    <url>
         <loc>
-            http://alagenchev.com/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/
+            http://alagenchev.github.io/blog/2012/09/12/setting-up-an-octopress-blog-on-github/
         </loc>
         <lastmod>2013-02-03T23:29:20-05:00</lastmod>
     </url>
     <url>
         <loc>
-            http://alagenchev.com/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/
+            http://alagenchev.github.io/blog/2012/09/14/how-to-use-octopress-with-multiple-users-or-on-multiple-machines/
         </loc>
         <lastmod>2013-02-03T23:29:20-05:00</lastmod>
     </url>
     <url>
-        <loc>http://alagenchev.com/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/</loc>
+        <loc>
+            http://alagenchev.github.io/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/
+        </loc>
         <lastmod>2013-02-03T23:29:20-05:00</lastmod>
     </url>
     <url>
-        <loc>http://alagenchev.com/blog/2012/10/26/grails-doesnt-break-out-of-closures/</loc>
+        <loc>
+            http://alagenchev.github.io/blog/2012/10/05/gnome-keyring-bug-mismanages-ssh-keys/
+        </loc>
         <lastmod>2013-02-03T23:29:20-05:00</lastmod>
     </url>
     <url>
-        <loc>http://alagenchev.com/about/</loc>
+        <loc>
+            http://alagenchev.github.io/blog/2012/10/26/grails-doesnt-break-out-of-closures/
+        </loc>
+        <lastmod>2013-02-03T23:29:20-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://alagenchev.github.io/about/</loc>
         <lastmod>2013-08-25T22:08:44-04:00</lastmod>
     </url>
     <url>
-        <loc>http://alagenchev.com/blog/archives/</loc>
+        <loc>http://alagenchev.github.io/blog/archives/</loc>
         <lastmod>2013-02-03T23:29:20-05:00</lastmod>
     </url>
     <url>
-        <loc>http://alagenchev.com/robots.txt</loc>
+        <loc>http://alagenchev.github.io/robots.txt</loc>
         <lastmod>2013-02-03T22:59:05-05:00</lastmod>
     </url>
     <url>
-        <loc>http://alagenchev.com/</loc>
+        <loc>http://alagenchev.github.io/</loc>
         <lastmod>2013-02-03T23:29:20-05:00</lastmod>
     </url>
 </urlset>

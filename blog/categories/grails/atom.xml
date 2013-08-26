@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Grails | Ivan Alagenchev's Personal Blog]]></title>
-  <link href="http://alagenchev.github.io/blog/categories/grails/atom.xml" rel="self"/>
-  <link href="http://alagenchev.github.io/"/>
-  <updated>2013-08-26T00:16:02-04:00</updated>
-  <id>http://alagenchev.github.io/</id>
+  <link href="http://alagenchev.com/blog/categories/grails/atom.xml" rel="self"/>
+  <link href="http://alagenchev.com/"/>
+  <updated>2013-08-26T00:19:14-04:00</updated>
+  <id>http://alagenchev.com/</id>
   <author>
     <name><![CDATA[Ivan Alagenchev]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Grails Deletes plugin-classes on grails clean]]></title>
-    <link href="http://alagenchev.github.io/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/"/>
+    <link href="http://alagenchev.com/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean/"/>
     <updated>2012-10-05T13:03:00-04:00</updated>
-    <id>http://alagenchev.github.io/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean</id>
+    <id>http://alagenchev.com/blog/2012/10/05/grails-deletes-plugin-classes-on-grails-clean</id>
     <content type="html"><![CDATA[<p>Today <a href="grails.org">Grails</a> gave me the following error:</p>
 
 <blockquote><pre><code>Description Resource    Path    Location    Type
